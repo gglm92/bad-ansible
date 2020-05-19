@@ -13,69 +13,29 @@
 #   Bare variables
 #   No use of handlers
 
-- name: configuration
+- name: Configuration of repositories
   hosts: all
-  gather_facts: false # remove later! speeds up testing
+  gather_facts: false 
   roles:
     - enable_repo
 
 - name: deploy haproxy
-  hosts: frontends
-  gather_facts: false # remove later! speeds up testing
+  hosts: apps, frontends
+  gather_facts: true
   become: true
-
   tasks:
-  - name: http
-    package:
-      name: httpie
-      state: latest
-  - name: install HAProxy
-    yum:
-      name=haproxy state=latest
-  - name: enable HAProxy
-    service:
-      name: haproxy
-      state: started
-  - name: configure haproxy
-    template:
-      src: ./haproxy.cfg.j2
-      dest: /etc/haproxy/haproxy.cfg
-  - name: restart HAproxy
-    service:
-      name: haproxy
-      state: restarted
-
+  - name: Run deploy_haproxy role
+    include_role:
+      name: deploy_haproxy
+    when: >-
+      'frontends' in group_names
 
 - name: deploy tomcat
   hosts: apps
   gather_facts: false
   become: true
-
-  tasks:
-  - name: install tomcat
-    package:
-      name: tomcat
-      state: latest
-  - name: enable tomcat at boot
-    service:
-      name: tomcat
-      enabled: yes
-
-  - name: create ansible tomcat directory
-    file:
-      path: /usr/share/tomcat/webapps/ROOT
-      state: directory
-
-  - name: copy static index.html to tomcat webapps/ansible/index.html
-    template:
-      src: index.html.j2
-      dest: /usr/share/tomcat/webapps/ROOT/index.html
-      mode: 0644
-
-  - name: start tomcat
-    service:
-      name: tomcat
-      state: started
+  roles:
+    - install_tomcat
 
 - name: index.html on app 1
   hosts: app1
@@ -143,7 +103,6 @@
   hosts: apps
   gather_facts: false
   become: true
-  hosts: apps
   tasks:
   - name: install apache
     yum:
