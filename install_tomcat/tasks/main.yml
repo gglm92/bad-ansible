@@ -25,3 +25,20 @@
   service:
     name: tomcat
     state: started
+    enabled: true
+
+- name: create ansible tomcat directory
+  file:
+    path: /var/lib/tomcat/webapps/ansible
+    state: directory
+
+- name: copy static index.html to tomcat webapps/ansible/index.html
+  template:
+    src: index.html.j2
+    dest: /var/lib/tomcat/webapps/ansible/index.html
+
+- name: enable apache httpd at boot
+  service:
+    name: httpd
+    state: started
+    enabled: true
