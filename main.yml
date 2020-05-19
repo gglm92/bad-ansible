@@ -1,53 +1,39 @@
 ---
-# Bad ansible! This playbook is an example of poor/bad practices!
-# Bad practices may include:
-#
-#   Poor formatting and structure
-#   Poor use of YAML - but good enough to parse
-#   Inconsistent style
-#   Incorrect use of modules
-#   Poor module choice
-#   Unclear names
-#   Hard coding / poor use of variables
-#   Roles - what are roles?
-#   Bare variables
-#   No use of handlers
-
-- name: Configuration of repositories
-  hosts: all
-  gather_facts: false 
+- name:                 Configuration of repositories
+  hosts:                all
+  gather_facts:         false 
   roles:
     - enable_repo
 
-- name: deploy haproxy
-  hosts: apps, frontends
-  gather_facts: true
-  become: true
+- name:                 Deploy haproxy
+  hosts:                apps, frontends
+  gather_facts:         true
+  become:               true
   tasks:
-  - name: Run deploy_haproxy role
+  - name:               Run deploy_haproxy role
     include_role:
-      name: deploy_haproxy
+      name:             deploy_haproxy
     when: >-
       'frontends' in group_names
 
-- name: deploy tomcat
-  hosts: apps
-  gather_facts: false
-  become: true
+- name:                 Deploy tomcat
+  hosts:                apps
+  gather_facts:         false
+  become:               true
   roles:
     - install_tomcat
 
-- name: deploy postgres
-  gather_facts: false
-  become: true
-  hosts: appdbs
+- name:                 Deploy postgres
+  gather_facts:         false
+  become:               true
+  hosts:                appdbs
   roles:
     - install_postgres
 
 
-- name: deploy apache
-  hosts: apps
-  gather_facts: false
-  become: true
+- name:                 Deploy apache
+  hosts:                apps
+  gather_facts:         false
+  become:               true
   roles:
     - install_apache
