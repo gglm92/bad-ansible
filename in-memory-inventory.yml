@@ -1,8 +1,8 @@
 ---
 - name: Show in-memory inventory with add_host
-  hosts: localhost
-  gather_facts: false
-  connection: local
+  hosts: workstation
+#  gather_facts: false
+#  connection: local
   tasks:
   - name: Get server info
     os_server_info:
