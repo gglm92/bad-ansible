@@ -18,7 +18,7 @@
       - "{{ _server.metadata.group | default('ungrouped') }}"
       ansible_host: "{{ _server.accessIPv4 }}"
       ansible_user: cloud-user
-      ansible_ssh_private_key_file: ~/.ssh/test_id_rsa
+      ansible_ssh_private_key_file: /home/cloud-user/.ssh/test_id_rsa
       ansible_ssh_extra_args: '-o StrictHostKeyChecking=no'
     loop: "{{ r_os_server_info.ansible_facts.openstack_servers }}"
     loop_control:
