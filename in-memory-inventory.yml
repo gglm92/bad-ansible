@@ -1,8 +1,8 @@
 ---
 - name: Show in-memory inventory with add_host
-  hosts: workstation
-#  gather_facts: false
-#  connection: local
+  hosts: localhost
+  gather_facts: false
+  connection: local
   tasks:
   - name: Get server info
     os_server_facts:
@@ -22,4 +22,9 @@
       loop_var: _server
       label: "{{ _server.name }}"
     changed_when: true
-
+    
+- name: Configure servers
+  hosts: testservers
+  gather_facts: false
+  tasks:
+  - ping: {}
