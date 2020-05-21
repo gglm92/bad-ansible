@@ -8,6 +8,8 @@
     os_server_facts:
       cloud: openstack
     register: r_os_server_info
+    
+  - debug: var=r_os_server_info
 
   - name: Add servers to in-memory inventory
     add_host:
